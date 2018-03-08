@@ -157,15 +157,11 @@ abstract class CIMAbstractResponse extends AbstractResponse
     {
         $arr = array();
 
-        foreach ($xml as $element) {
-            $tag = $element->getName();
-            $e = get_object_vars($element);
+        $e = get_object_vars($xml);
 
-            if (!empty($e)) {
-                $arr[$tag][] = $element instanceof \SimpleXMLElement ? $this->xml2array($element) : $e;
-            } else {
-                $arr[$tag] = trim($element);
-            }
+        // build our array
+        foreach ($e as $key => $value) {
+            $arr[$key] = $value instanceof \SimpleXMLElement ? [$this->xml2Array($value)] : $value;
         }
 
         return $arr;
